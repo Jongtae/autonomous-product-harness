@@ -1,0 +1,52 @@
+schema_version = 1
+updated_at = ""
+profile = "S"
+maturity = "candidate"
+current_phase = "bootstrap"
+current_goal = "Replace this with the product's current goal."
+next_action = "Inspect the repository, select the minimum sufficient APH profile, and initialize project-specific state."
+production_url = ""
+last_known_good_sha = ""
+active_issues = []
+active_experiments = []
+human_gates = []
+current_risks = []
+
+[autonomy_proof]
+completed_closed_loops = 0
+required_closed_loops = 5
+successful_recovery_drills = 0
+required_recovery_drills = 1
+eval_pass_rate = 0.0
+required_eval_pass_rate = 0.95
+critical_eval_failures = 0
+max_critical_eval_failures = 0
+policy_conflicts = 0
+max_policy_conflicts = 0
+human_interventions_outside_declared_gates = 0
+max_human_interventions_outside_declared_gates = 0
+
+[team_metrics]
+autonomous_completion_rate = 0.0
+human_gate_rate = 0.0
+median_issue_to_release_hours = 0.0
+rework_rate = 0.0
+rollback_rate = 0.0
+escaped_defect_rate = 0.0
+decision_reversal_rate = 0.0
+agent_retry_count = 0
+model_cost_per_shipped_issue_usd = 0.0
+
+[release_state]
+status = "not-configured"
+release_sha = ""
+rollback_sha = ""
+last_smoke_status = "not-run"
+last_security_status = "not-run"
+last_privacy_status = "not-run"
+last_eval_status = "not-run"
+
+[feedback_state]
+channels = []
+last_experiment_id = ""
+last_decision_id = ""
