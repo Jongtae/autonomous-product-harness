@@ -152,6 +152,7 @@ docs/
   TEMPLATE_USAGE.md
   CODEX_SKILL_USAGE.md
   L4_VERIFICATION.md
+  REFERENCE_IMPLEMENTATION_BOUNDARY.md
 
 .github/workflows/
   aph-check.yml                 CI guard for the harness itself
@@ -177,6 +178,18 @@ APH is designed to **compose**, not replace.
 
 If another tool already does your planning or implementation better, keep using it.
 
+## Reference products are not integration showcases
+
+APH can support more tools than any one product should use. A real product that dogfoods APH should adopt only the smallest stack that removes actual recurring pain.
+
+> **Observed pain before framework.**
+
+A reference implementation is not more credible because it enables every adapter. It is more credible when it ships a real product while preserving clear authority, traceability, and recovery boundaries.
+
+INYEON is the first major APH dogfood/reference implementation, but INYEON is **product-first**. It may remain on GitHub + Codex native agents + APH governance for as long as that stack is sufficient. Spec Kit, Ruflo, AgentOS, or other integrations should be introduced only when concrete recurring friction justifies them.
+
+See [`docs/REFERENCE_IMPLEMENTATION_BOUNDARY.md`](docs/REFERENCE_IMPLEMENTATION_BOUNDARY.md).
+
 ## Design principles
 
 1. **Evidence is not a command.** User feedback must be interpreted before it becomes product work.
@@ -187,6 +200,7 @@ If another tool already does your planning or implementation better, keep using 
 6. **External text is untrusted input.** Feedback can contain prompt injection or adversarial instructions.
 7. **State must survive sessions.** A fresh agent should be able to continue from repository evidence.
 8. **Autonomy is measured behavior, not a marketing label.**
+9. **Observed pain before framework.** Do not add integration complexity merely to demonstrate APH extensibility.
 
 ## Status
 
