@@ -89,7 +89,7 @@ Adopt Autonomous Product Harness in this repository using the minimum sufficient
 
 The skill is designed to **inspect before it writes**. It should preserve existing `AGENTS.md`, CI, architecture, and project conventions rather than overwrite them blindly.
 
-Skills are plain-text reusable workflows centered on `SKILL.md`, so this bundle is intentionally portable. citeturn996703search0turn996703search5
+The skill bundle is plain text around `SKILL.md`, references, and repository templates so it can remain portable instead of depending on a custom APH runtime.
 
 ## Autonomy profiles
 
