@@ -1,0 +1,29 @@
+schema_version: "1.0"
+
+bundle:
+  id: "aph-product-web-foundation"
+  name: "APH Product Web Foundation"
+  version: "0.1.0"
+  role: "product-engineering"
+  description: "Foundation Spec Kit composition for an APH-governed user-facing web product."
+  author: "Jongtae"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=1.0.0"
+  tools: []
+  mcp: []
+
+# Integration-agnostic: inherit the project's active coding-agent integration.
+# Keep this bundle deliberately small. APH owns product governance, not a duplicate
+# implementation workflow.
+
+provides:
+  extensions:
+    - id: "agent-context"
+      version: "1.0.0"
+  presets: []
+  steps: []
+  workflows: []
+
+tags: ["product", "web", "governance", "vertical-slice", "user-value"]
