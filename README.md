@@ -59,6 +59,38 @@ Operator ≠ Analyst ≠ Judge ≠ Implementer ≠ Release verifier
 
 A campaign operator should not grade its own campaign. A feedback analyst should not directly change the product. A product judge should not treat popularity as truth. A worker should not expand scope just because it can.
 
+## User value before autonomy proof
+
+A well-governed autonomous team can still optimize the wrong proxy. Passing tests, CI, privacy/security checks, release gates, or autonomy evals does **not** by itself prove that the product delivers what a user came for.
+
+APH therefore adds a **User Value Gate**:
+
+> **Autonomy cannot advance beyond the highest product-value milestone that has been demonstrated end to end.**
+
+Use this proof ladder:
+
+```text
+functionality
+    ↓
+user value
+    ↓
+correctness / domain validation
+    ↓
+safety / privacy / reliability
+    ↓
+release / recovery
+    ↓
+autonomy proof
+```
+
+For new products, major features, and product recovery, use **Vertical Slice First**: prove one complete user-facing path through the real product before expanding infrastructure, datasets, governance artifacts, or autonomy evidence.
+
+Product Acceptance should be black-box and outcome-oriented. If three substantial implementation cycles do not change Product Acceptance or materially reduce its concrete blocker, stop and re-evaluate instead of generating more artifacts merely to remain active.
+
+This does **not** mean adding routine owner approvals. Human Gates remain narrow; product-value verification should be automated wherever practical.
+
+See [`docs/USER_VALUE_GATE.md`](docs/USER_VALUE_GATE.md).
+
 ## Two ways to use APH
 
 ### 1. GitHub Template — best for a new project
@@ -114,6 +146,7 @@ A repository may begin as `l4-candidate`. It should only claim `l4-verified` aft
 
 A recommended graduation contract includes:
 
+- a demonstrated primary user-value path at the appropriate release stage;
 - 5 consecutive qualifying autonomous closed loops;
 - behavioral governance eval pass rate ≥ 95%;
 - zero critical governance failures;
@@ -149,6 +182,7 @@ skills/
 
 docs/
   AUTONOMY_PROFILES.md
+  USER_VALUE_GATE.md
   TEMPLATE_USAGE.md
   CODEX_SKILL_USAGE.md
   L4_VERIFICATION.md
@@ -201,6 +235,7 @@ See [`docs/REFERENCE_IMPLEMENTATION_BOUNDARY.md`](docs/REFERENCE_IMPLEMENTATION_
 7. **State must survive sessions.** A fresh agent should be able to continue from repository evidence.
 8. **Autonomy is measured behavior, not a marketing label.**
 9. **Observed pain before framework.** Do not add integration complexity merely to demonstrate APH extensibility.
+10. **User value before autonomy proof.** Passing implementation proxies cannot substitute for a demonstrated primary user outcome.
 
 ## Status
 
