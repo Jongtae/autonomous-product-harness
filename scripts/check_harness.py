@@ -16,7 +16,12 @@ REQUIRED_FILES = [
     "governance/PRODUCT_DECISION_POLICY.md",
     "governance/INCIDENT_RECOVERY.md",
     "docs/AUTONOMY_PROFILES.md",
+    "docs/USER_VALUE_GATE.md",
+    "docs/STACK_BOUNDARY.md",
     "docs/L4_VERIFICATION.md",
+    "starters/product-web/README.md",
+    "spec-kit/bundles/aph-product-web/bundle.yml",
+    "spec-kit/bundles/aph-product-web/README.md",
     "skills/autonomous-product-harness/SKILL.md",
     "skills/autonomous-product-harness/references/profiles.md",
     "skills/autonomous-product-harness/references/migration.md",
@@ -134,6 +139,54 @@ if skill_path.exists():
         errors.append("SKILL.md missing expected skill name")
     if "minimum sufficient profile" not in text.lower():
         errors.append("SKILL.md must preserve the minimum-sufficient-profile rule")
+    if "spec kit" not in text.lower() or "superpowers" not in text.lower():
+        errors.append("SKILL.md must preserve ecosystem-composition guidance")
+    if "reroute blocked work" not in text.lower():
+        errors.append("SKILL.md must preserve blocked-work rerouting semantics")
+
+stack_boundary_path = ROOT / "docs/STACK_BOUNDARY.md"
+if stack_boundary_path.exists():
+    text = stack_boundary_path.read_text(encoding="utf-8")
+    required_phrases = [
+        "one owner per responsibility",
+        "goal blocks are not human gates",
+        "do not ask the owner \"what should i do next?\"",
+    ]
+    for phrase in required_phrases:
+        if phrase not in text.lower():
+            errors.append(f"STACK_BOUNDARY.md missing required contract phrase: {phrase}")
+
+starter_path = ROOT / "starters/product-web/README.md"
+if starter_path.exists():
+    text = starter_path.read_text(encoding="utf-8")
+    if "black-box product acceptance" not in text.lower():
+        errors.append("product-web starter must require black-box Product Acceptance")
+    if "vertical slice first" not in text.lower():
+        errors.append("product-web starter must preserve Vertical Slice First")
+    if "three substantial implementation cycles" not in text.lower():
+        errors.append("product-web starter must preserve the anti-waste cycle rule")
+
+bundle_path = ROOT / "spec-kit/bundles/aph-product-web/bundle.yml"
+if bundle_path.exists():
+    text = bundle_path.read_text(encoding="utf-8")
+    bundle_markers = [
+        'schema_version: "1.0"',
+        'id: "aph-product-web-foundation"',
+        'speckit_version: ">=1.0.0"',
+        'id: "agent-context"',
+        'version: "1.0.0"',
+    ]
+    for marker in bundle_markers:
+        if marker not in text:
+            errors.append(f"Spec Kit bundle scaffold missing marker: {marker}")
+
+bundle_readme_path = ROOT / "spec-kit/bundles/aph-product-web/README.md"
+if bundle_readme_path.exists():
+    text = bundle_readme_path.read_text(encoding="utf-8")
+    if "speckit-superpowers-bridge" not in text:
+        errors.append("bundle README must document optional Superpowers bridge")
+    if "does not" not in text.lower() or "silently install" not in text.lower():
+        errors.append("bundle README must document the community-component trust boundary")
 
 if errors:
     print("APH check FAILED")

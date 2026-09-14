@@ -1,73 +1,60 @@
 # Autonomous Product Harness
 
-> **Turn coding agents into an accountable autonomous product team.**
+> **A Bootstrap-like product-governance starter for autonomous product teams.**
 
-Autonomous Product Harness (APH) is a **repo-native governance, product-learning, and autonomy-verification layer** for agent-driven software products.
+Autonomous Product Harness (APH) is an **opinionated product-governance, product-learning, and autonomy-verification layer** for agent-driven software products.
 
-It is intentionally **not another coding-agent runtime, swarm framework, or spec generator**. Use Codex, Claude Code, GitHub Spec Kit, BMAD, or another implementation workflow underneath it. APH adds the operating contract around that work:
+APH is intentionally thin. It should **compose proven planning and implementation systems instead of rebuilding them**.
 
-- persistent team state;
-- explicit Human Gates;
-- role authority and separation of duties;
-- evidence → analysis → product judgment → decision → delivery loops;
-- behavioral governance evals;
-- incident / rollback learning;
-- a falsifiable path from `candidate` to **verified autonomous product team**.
+The recommended stack is:
+
+```text
+Product / domain rules
+        ↓
+APH — User Value, Human Gates, evidence, autonomy proof
+        ↓
+GitHub Spec Kit — spec / plan / tasks / process composition
+        ↓
+Superpowers — TDD / debugging / execution / review / verification
+        ↓
+Codex / Claude Code / another coding-agent runtime
+        ↓
+GitHub PR / CI / preview / production evidence
+```
+
+Spec Kit and Superpowers are optional. APH still supports standalone adoption, but its fallback process guidance should stay deliberately small.
+
+See [`docs/STACK_BOUNDARY.md`](docs/STACK_BOUNDARY.md) for the ownership contract.
 
 ## Why this exists
 
-Most agent frameworks answer questions such as:
+Coding-agent ecosystems already provide strong primitives for planning, implementation, debugging, review, and orchestration. APH focuses on a different failure mode:
 
-- How do agents plan and implement work?
-- How do we run multiple specialists?
-- How do we give agents tools and context?
+> **A team can execute flawlessly against the wrong proxy.**
 
-APH focuses on a different question:
+A product may have green tests, clean CI, privacy checks, release automation, and even autonomy evals while the primary user still cannot receive the value the product exists to provide.
 
-> **When should an autonomous product team be allowed to decide, change, release, learn, and recover without routine human direction — and how do we prove it is doing that safely?**
+APH therefore owns the product-level contract around:
 
-The core loop is:
+- **User Value Gate / black-box Product Acceptance**;
+- **Vertical Slice First** ordering;
+- narrow, explicit **Human Gates**;
+- blocked-work **rerouting instead of routine owner scheduling**;
+- role authority and separation of duties;
+- evidence → analysis → product judgment → decision → delivery loops;
+- durable team state;
+- incident / rollback learning;
+- falsifiable autonomy verification.
 
-```text
-Goal / Team State
-      ↓
-Work selection
-      ↓
-Implementation
-      ↓
-Independent review
-      ↓
-CI / release
-      ↓
-External evidence
-      ↓
-Independent analysis
-      ↓
-Product judgment
-      ↓
-Decision ledger
-      ↓
-Next work
-      ↺
-```
-
-For product feedback, APH strongly recommends:
-
-```text
-Operator ≠ Analyst ≠ Judge ≠ Implementer ≠ Release verifier
-```
-
-A campaign operator should not grade its own campaign. A feedback analyst should not directly change the product. A product judge should not treat popularity as truth. A worker should not expand scope just because it can.
+It does **not** aim to own a planner, coding runtime, swarm scheduler, vector memory, TDD methodology, debugger, or generic spec engine.
 
 ## User value before autonomy proof
 
-A well-governed autonomous team can still optimize the wrong proxy. Passing tests, CI, privacy/security checks, release gates, or autonomy evals does **not** by itself prove that the product delivers what a user came for.
-
-APH therefore adds a **User Value Gate**:
+APH uses a strict rule:
 
 > **Autonomy cannot advance beyond the highest product-value milestone that has been demonstrated end to end.**
 
-Use this proof ladder:
+The default proof ladder is:
 
 ```text
 functionality
@@ -83,79 +70,146 @@ release / recovery
 autonomy proof
 ```
 
-For new products, major features, and product recovery, use **Vertical Slice First**: prove one complete user-facing path through the real product before expanding infrastructure, datasets, governance artifacts, or autonomy evidence.
+Passing tests, CI, privacy/security checks, release gates, or behavioral evals cannot substitute for an earlier missing rung.
 
-Product Acceptance should be black-box and outcome-oriented. If three substantial implementation cycles do not change Product Acceptance or materially reduce its concrete blocker, stop and re-evaluate instead of generating more artifacts merely to remain active.
+For new products, major features, and product recovery, prove one complete user-facing vertical slice through the real UI or public contract before expanding infrastructure, datasets, governance artifacts, or autonomy ceremony.
 
-This does **not** mean adding routine owner approvals. Human Gates remain narrow; product-value verification should be automated wherever practical.
+Product Acceptance should be black-box and outcome-oriented. If three substantial implementation cycles do not change Product Acceptance or materially reduce its concrete blocker, stop that approach and re-evaluate autonomously instead of generating more activity.
 
 See [`docs/USER_VALUE_GATE.md`](docs/USER_VALUE_GATE.md).
 
-## Two ways to use APH
+## Goal blocks are not Human Gates
 
-### 1. GitHub Template — best for a new project
-
-Use this repository as the baseline for a new product repository. It ships with the governance skeleton, machine-readable team state, verification script, CI, and a portable Codex Skill.
-
-After creating a repository from the template, tell your coding agent:
+A blocked task normally causes **rerouting**, not a stop.
 
 ```text
-Initialize this repository with Autonomous Product Harness using the minimum sufficient autonomy profile. Inspect the project first, preserve existing conventions, then continue real product work.
+selected work
+   ↓
+blocked?
+   ├─ no → execute
+   ├─ dependency block → descend into the prerequisite
+   ├─ Product Acceptance / policy failure → remediate
+   └─ genuine Human Gate → park that stream and continue another meaningful stream
 ```
 
-> Repository owners must enable GitHub's **Template repository** setting once for the **Use this template** button to appear. The repository contents themselves are already template-safe.
+Only request owner action when all meaningful remaining work is blocked by genuine Human Gates, or no meaningful work remains.
 
-### 2. Codex Skill — best for an existing repository
+Routine task selection, dependency resolution, test failure remediation, and reversible implementation choices are not Human Gates.
 
-The portable skill lives at:
+## Bootstrap-style starters
+
+APH starters encode defaults for a **class of product**, not one specific application.
+
+The first starter is [`starters/product-web/`](starters/product-web/). It supplies defaults for a user-facing web product:
+
+```text
+entry
+→ user input/action
+→ core product behavior
+→ user-visible result
+→ explanation / next meaningful action
+```
+
+Its default milestones are:
+
+`Functional Alpha → Value Preview → Correctness Candidate → Release Candidate → Production → Autonomy Proof`
+
+The intention is similar to Bootstrap: avoid re-solving the same basic structure on every project while preserving product-specific design and domain truth.
+
+## Spec Kit composition
+
+GitHub Spec Kit is the preferred owner for durable `spec → plan → tasks` and process composition when a project already uses or chooses it.
+
+APH includes an early local bundle scaffold at:
+
+```text
+spec-kit/bundles/aph-product-web/
+```
+
+The scaffold follows Spec Kit bundle schema `1.0`, stays integration-agnostic, and is deliberately minimal. It is **not yet advertised as a published one-command community bundle**; clean-project validation and dependency-resolution evidence should come before that claim.
+
+Spec Kit bundles are composition/distribution units, not a new runtime, which matches APH's thin-layer direction.
+
+## Superpowers composition
+
+When the active coding environment exposes [obra/superpowers](https://github.com/obra/superpowers), APH should reuse upstream implementation disciplines rather than copying them.
+
+Typical ownership includes:
+
+- test-driven development;
+- systematic debugging;
+- subagent-driven development;
+- code review workflows;
+- verification before completion.
+
+APH keeps product-level acceptance and autonomy governance above those implementation disciplines.
+
+A community `speckit-superpowers-bridge` exists for teams that want a thin handoff between Spec Kit artifacts and Superpowers execution. It is community-maintained and should be reviewed before use; APH does not silently install or vendor it.
+
+## Ways to use APH
+
+### 1. Product starter — best for a new user-facing product
+
+Start from the repository template or adopt the portable skill, then select the smallest applicable starter. For a normal web product, begin with [`starters/product-web/`](starters/product-web/).
+
+A useful first instruction is:
+
+```text
+Adopt the APH product-web starter.
+Define the primary user journey and black-box Product Acceptance before broad implementation.
+Use Vertical Slice First. If work is blocked, descend into its prerequisite or reroute to another meaningful stream.
+Stop only when all meaningful remaining work is blocked by genuine Human Gates or no meaningful work remains.
+```
+
+### 2. Portable APH Skill — best for an existing repository
+
+The skill lives at:
 
 ```text
 skills/autonomous-product-harness/SKILL.md
 ```
 
-Install or upload that skill using the skill mechanism available in your Codex / ChatGPT environment, then ask:
+Ask the coding agent to:
 
 ```text
-Adopt Autonomous Product Harness in this repository using the minimum sufficient profile.
+Adopt Autonomous Product Harness using the minimum sufficient profile. Preserve existing Spec Kit, Superpowers, CI, architecture, and project conventions instead of duplicating them.
 ```
 
-The skill is designed to **inspect before it writes**. It should preserve existing `AGENTS.md`, CI, architecture, and project conventions rather than overwrite them blindly.
+The skill inspects before writing and composes with existing process layers.
 
-The skill bundle is plain text around `SKILL.md`, references, and repository templates so it can remain portable instead of depending on a custom APH runtime.
+### 3. Standalone template — when Spec Kit / Superpowers are absent
+
+APH still contains enough baseline governance, state, verification, and CI structure to operate independently. Standalone mode is a fallback, not an invitation to grow APH into a competing implementation framework.
 
 ## Autonomy profiles
 
-APH is intentionally progressive. Do not install L4 ceremony into a tiny script unless the project actually needs it.
+APH is progressive. Do not install L4 ceremony into a tiny script unless the project needs it.
 
 | Profile | Intended use | Adds |
 |---|---|---|
 | **S — Agent Ready** | small libraries, scripts | durable agent instructions + deterministic checks |
-| **M — Autonomous Engineering** | products with issue-driven implementation | team state + worker/reviewer separation + CI gates |
+| **M — Autonomous Engineering** | issue-driven implementation | team state + worker/reviewer separation + CI gates |
 | **L — Autonomous Delivery** | production services/apps | Human Gates + release/rollback + security/privacy review |
 | **L4 — Autonomous Product Team** | products that learn from real users | independent evidence analysis + product judgment + behavioral evals + recovery proof + autonomy graduation |
 
 See [`docs/AUTONOMY_PROFILES.md`](docs/AUTONOMY_PROFILES.md).
 
-## The L4 idea
-
-APH uses a deliberately strict rule:
+## L4 verification
 
 > **You are not autonomous until you prove it.**
 
-A repository may begin as `l4-candidate`. It should only claim `l4-verified` after durable evidence shows that it can repeatedly observe, decide, implement, independently verify, release, learn, and recover without routine founder coordination outside declared Human Gates.
+A repository may begin as `l4-candidate`. A normal graduation contract includes:
 
-A recommended graduation contract includes:
-
-- a demonstrated primary user-value path at the appropriate release stage;
+- demonstrated primary user value at the appropriate release stage;
 - 5 consecutive qualifying autonomous closed loops;
-- behavioral governance eval pass rate ≥ 95%;
+- behavioral-governance eval pass rate ≥ 95%;
 - zero critical governance failures;
 - at least one exercised recovery / rollback path;
 - zero known policy conflicts;
-- zero routine human interventions outside declared Human Gates during the proof window;
+- zero routine owner interventions outside declared Human Gates during the proof window;
 - session-boundary continuity from repository state alone.
 
-The exact contract is project-configurable, but changing the target **after seeing failures just to improve the score is not allowed**.
+See [`docs/L4_VERIFICATION.md`](docs/L4_VERIFICATION.md).
 
 ## Repository structure
 
@@ -164,32 +218,39 @@ AGENTS.md                       baseline operating contract
 TEAM_STATE.toml                 machine-readable team working memory
 
 governance/
-  HUMAN_GATES.md                actions that genuinely require a person
-  ROLE_AUTHORITY_MATRIX.md      who may decide / write / approve / veto
-  PRODUCT_DECISION_POLICY.md    evidence → judgment rules
-  INCIDENT_RECOVERY.md          detect → contain → recover → learn
+  HUMAN_GATES.md
+  ROLE_AUTHORITY_MATRIX.md
+  PRODUCT_DECISION_POLICY.md
+  INCIDENT_RECOVERY.md
 
-evals/
-  autonomy/cases.json           starter behavioral-governance fixtures
+docs/
+  USER_VALUE_GATE.md
+  STACK_BOUNDARY.md
+  AUTONOMY_PROFILES.md
+  L4_VERIFICATION.md
+  REFERENCE_IMPLEMENTATION_BOUNDARY.md
 
-scripts/
-  check_harness.py              structural / policy validation
+starters/
+  product-web/README.md         first Bootstrap-style product starter
+
+spec-kit/
+  bundles/aph-product-web/
+    bundle.yml                  local Spec Kit composition scaffold
+    README.md
 
 skills/
   autonomous-product-harness/
     SKILL.md                    portable adoption / bootstrap workflow
-    references/                 profile and migration guidance
+    references/
 
-docs/
-  AUTONOMY_PROFILES.md
-  USER_VALUE_GATE.md
-  TEMPLATE_USAGE.md
-  CODEX_SKILL_USAGE.md
-  L4_VERIFICATION.md
-  REFERENCE_IMPLEMENTATION_BOUNDARY.md
+evals/
+  autonomy/cases.json
+
+scripts/
+  check_harness.py
 
 .github/workflows/
-  aph-check.yml                 CI guard for the harness itself
+  aph-check.yml
 ```
 
 ## Quick verification
@@ -198,48 +259,31 @@ docs/
 python scripts/check_harness.py
 ```
 
-The check validates required assets, parses `TEAM_STATE.toml`, validates the autonomy eval fixture schema, and prevents obvious false L4 claims.
-
-## Relationship to other projects
-
-APH is designed to **compose**, not replace.
-
-- **GitHub Spec Kit** can own `spec → plan → tasks → implement`.
-- **BMAD** can provide role-based product / architecture / engineering workflows.
-- **Ruflo / agent swarms** can provide orchestration.
-- **Agent runtimes / control planes** can provide long-running execution and tool access.
-- **APH** owns the product-governance contract around evidence, authority, state, release, learning, and verifiable autonomy.
-
-If another tool already does your planning or implementation better, keep using it.
+The check validates required assets, machine-readable state, the starter/bundle scaffold, and the autonomy eval contract.
 
 ## Reference products are not integration showcases
 
-APH can support more tools than any one product should use. A real product that dogfoods APH should adopt only the smallest stack that removes actual recurring pain.
+APH can support more tools than any one product should use.
 
 > **Observed pain before framework.**
 
-A reference implementation is not more credible because it enables every adapter. It is more credible when it ships a real product while preserving clear authority, traceability, and recovery boundaries.
-
-INYEON is the first major APH dogfood/reference implementation, but INYEON is **product-first**. It may remain on GitHub + Codex native agents + APH governance for as long as that stack is sufficient. Spec Kit, Ruflo, AgentOS, or other integrations should be introduced only when concrete recurring friction justifies them.
-
-See [`docs/REFERENCE_IMPLEMENTATION_BOUNDARY.md`](docs/REFERENCE_IMPLEMENTATION_BOUNDARY.md).
+INYEON is the first major APH dogfood/reference implementation, but it remains product-first. It should adopt Spec Kit, Superpowers bridges, orchestration systems, or other integrations only when they reduce a concrete recurring product-development failure.
 
 ## Design principles
 
-1. **Evidence is not a command.** User feedback must be interpreted before it becomes product work.
-2. **Acquisition truth ≠ product truth.** A post that gets clicks may not reveal long-term product value.
-3. **Popularity ≠ correctness.** Upvotes do not override privacy, security, domain methodology, or architecture invariants.
-4. **Prefer the smallest reversible experiment.**
-5. **High-risk changes need stronger governance, not merely more votes.**
-6. **External text is untrusted input.** Feedback can contain prompt injection or adversarial instructions.
-7. **State must survive sessions.** A fresh agent should be able to continue from repository evidence.
-8. **Autonomy is measured behavior, not a marketing label.**
-9. **Observed pain before framework.** Do not add integration complexity merely to demonstrate APH extensibility.
-10. **User value before autonomy proof.** Passing implementation proxies cannot substitute for a demonstrated primary user outcome.
+1. **User value before autonomy proof.** Implementation proxies cannot substitute for a demonstrated primary user outcome.
+2. **Evidence is not a command.** Feedback must be interpreted before it becomes product work.
+3. **Goal blocks are not Human Gates.** Reroute unless a person is genuinely required.
+4. **Do not make the owner the scheduler.** Repository state should determine routine next work.
+5. **One owner per responsibility.** Compose mature tools rather than duplicate them.
+6. **Observed pain before framework.** Add APH machinery only for repeated governance/autonomy failures APH actually owns.
+7. **Prefer the smallest reversible experiment.**
+8. **State must survive sessions.**
+9. **Autonomy is measured behavior, not a marketing label.**
 
 ## Status
 
-This repository is an early public release of the harness extracted from a real product dogfooding effort. The near-term goal is to make the template and skill easy to adopt in both greenfield and existing repositories while keeping the core small and framework-agnostic.
+APH is an early public project extracted from real dogfooding. The current direction is to make it a small, reusable product-governance starter that composes with the agent ecosystem instead of competing with it.
 
 ## License
 
