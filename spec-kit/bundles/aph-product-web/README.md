@@ -42,7 +42,7 @@ Do not copy those skill texts into APH.
 
 For teams that want a Spec Kit ↔ Superpowers handoff, the community catalog currently contains `speckit-superpowers-bridge` (v1.2.0 at the time this scaffold was authored). It is community-maintained, not audited or endorsed by Spec Kit maintainers. Review its source and trust boundary before installing it.
 
-Because community component catalogs may be discovery-only by default, this foundation bundle does **not** silently install the bridge. A production-ready APH bundle may add it only after the full install path is verified from a clean Spec Kit project with the required install-allowed catalog configuration.
+Because community component catalogs may be discovery-only by default, this foundation bundle does not silently install the bridge. A production-ready APH bundle may add it only after the full install path is verified from a clean Spec Kit project with the required install-allowed catalog configuration.
 
 ## Local validation target
 
